@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagavad Gita + Numerology Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+        }
+
+        .result h2 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .result p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕉️ Bhagavad Gita + Numerology</h1>
+        <p class="subtitle">Discover Your Profile Through Ancient Wisdom</p>
+
+        <form id="profileForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" required placeholder="Your complete name">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" required placeholder="Your age">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <input type="text" id="gender" name="gender" placeholder="ladka / ladki">
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="Your city">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ambition">Your Dream / Ambition</label>
+                <textarea id="ambition" name="ambition" rows="2" placeholder="What is your goal in life?"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="favorite_color">Favorite Color</label>
+                    <input type="text" id="favorite_color" name="favorite_color" placeholder="Your favorite color">
+                </div>
+                <div class="form-group">
+                    <label for="career_goal">Career Focus</label>
+                    <input type="text" id="career_goal" name="career_goal" placeholder="Field of work">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="challenge">Current Challenge</label>
+                <textarea id="challenge" name="challenge" rows="2" placeholder="What challenges do you face?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="birthdate">Birth Date (DDMMYYYY)</label>
+                <input type="text" id="birthdate" name="birthdate" placeholder="Example: 15011990">
+            </div>
+
+            <button type="submit">Generate Profile</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <p>Loading your profile...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="result" id="result">
+            <h2>Your Profile</h2>
+            <div id="profileData"></div>
+
+            <h2>Numerology Analysis</h2>
+            <div id="numerologyData"></div>
+
+            <h2>Gita Wisdom</h2>
+            <div id="gitaData"></div>
+
+            <h2>Quote for You</h2>
+            <p id="quoteData"></p>
+
+            <h2>Chapter Themes</h2>
+            <div id="chaptersData"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                full_name: document.getElementById('full_name').value,
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                city: document.getElementById('city').value,
+                ambition: document.getElementById('ambition').value,
+                favorite_color: document.getElementById('favorite_color').value,
+                career_goal: document.getElementById('career_goal').value,
+                challenge: document.getElementById('challenge').value,
+                birthdate: document.getElementById('birthdate').value,
+            };
+
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('error').classList.remove('active');
+
+            try {
+                const response = await fetch('/api/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayResults(data);
+                } else {
+                    showError('Error generating profile');
+                }
+            } catch (error) {
+                showError('Error: ' + error.message);
+            } finally {
+                document.getElementById('loading').classList.remove('active');
+            }
+        });
+
+        function displayResults(data) {
+            document.getElementById('profileData').innerHTML = `<p>${data.profile}</p>`;
+
+            let numerologyHTML = '';
+            if (data.numerology.expression) numerologyHTML += `<p><strong>Expression Number:</strong> ${data.numerology.expression}</p>`;
+            if (data.numerology.soul) numerologyHTML += `<p><strong>Soul Number:</strong> ${data.numerology.soul}</p>`;
+            if (data.numerology.personality) numerologyHTML += `<p><strong>Personality Number:</strong> ${data.numerology.personality}</p>`;
+            if (data.numerology.life_path) numerologyHTML += `<p><strong>Life Path Number:</strong> ${data.numerology.life_path}</p>`;
+            if (data.numerology.maturity) numerologyHTML += `<p><strong>Maturity Number:</strong> ${data.numerology.maturity}</p>`;
+            numerologyHTML += `<p><strong>Missing Numbers:</strong> ${data.numerology.missing.length > 0 ? data.numerology.missing.join(', ') : 'None'}</p>`;
+            document.getElementById('numerologyData').innerHTML = numerologyHTML;
+
+            document.getElementById('gitaData').innerHTML = `<p>${data.gita_advice}</p>`;
+
+            document.getElementById('quoteData').textContent = data.quote;
+
+            let chaptersHTML = '';
+            for (const [num, theme] of Object.entries(data.chapter_themes)) {
+                chaptersHTML += `<p><strong>Chapter ${num}:</strong> ${theme}</p>`;
+            }
+            document.getElementById('chaptersData').innerHTML = chaptersHTML;
+
+            document.getElementById('result').classList.add('active');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+        }
+    </script>
+</body>
+</html>
