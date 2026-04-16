@@ -174,14 +174,14 @@ def format_chapter_preview(roman, lines):
 def style_summary(name, age, gender, ambition, favorite_color, challenge, career_goal):
     ambition = ambition.lower()
     if 'santushti' in ambition or 'shaanti' in ambition or 'dhyaan' in ambition:
-        return 'Tum shant swabhaav ke ho, jis mein dhairya aur vivek pradhan hain.'
+        return 'You should keep calm, use patience, and stay focused on your inner purpose.'
     if 'safalta' in ambition or 'samriddhi' in ambition or 'kamai' in ambition:
-        return 'Tum ek lagan aur dridh nishchay wale vyakti ho. tumhara drishti spashth hai.'
+        return 'You should use your energy with discipline and aim for steady progress toward success.'
     if 'seva' in ambition or 'madad' in ambition or 'duniya' in ambition:
-        return 'Tumhara dil sewa aur dayalu bhavna se bhara hai. logo ki madad tumhe sukh deti hai.'
+        return 'You should use your strength in service and lead with compassion for others.'
     if 'kalakar' in ambition or 'artist' in ambition or 'creative' in ambition:
-        return 'Tum mein rachnatmak urja hai. kalpana aur abhivyakti tumhara bal hain.'
-    return f'Tum ek pratibhashali vyakti ho jismein {favorite_color} jaise rang ki umang aur {career_goal} ka lakshya juda hai.'
+        return 'You should express your creativity and bring your ideas into action.'
+    return f'You should follow your passion for {career_goal} while keeping a positive attitude like {favorite_color}.'
 
 def profile_summary(full_name, age, gender, city, ambition, favorite_color, challenge, career_goal):
     gender_label = normalize_gender(gender)
@@ -189,33 +189,41 @@ def profile_summary(full_name, age, gender, city, ambition, favorite_color, chal
     power = power_message(age)
     time_desc = time_message(age)
 
-    return (
-        f"Namaste {full_name}! Tum ek {gender_label} ho jo {city} mein rehta hai.\n"
-        f"Tumhari umar {age} saal hai, aur tumhara sapna hai: {ambition}.\n"
-        f"Tumhara career goal: {career_goal}.\n"
-        f"Tumhara chunauti: {challenge}.\n"
-        f"{style}\n"
-        f"{power}\n"
-        f"{time_desc}\n"
-    )
+    return [
+        f"Name: {full_name}",
+        f"Gender: {gender_label}.",
+        f"Location: {city}.",
+        f"Age: {age}.",
+        f"Main ambition: {ambition}.",
+        f"Career focus: {career_goal}.",
+        f"Current challenge: {challenge}.",
+        f"Insight: {style}",
+        f"Strength: {power}",
+        f"Timing: {time_desc}",
+        "Action 1: Start with one clear step toward your goal today.",
+        "Action 2: Keep your mind calm and avoid overthinking every choice.",
+        "Action 3: Use your energy in disciplined effort, not scattered activity.",
+        "Action 4: Stay consistent for at least 21 days to build new habits.",
+        "Action 5: Trust your sense of duty and make decisions from purpose, not fear.",
+    ]
 
 def power_message(age):
     if age < 16:
-        return 'Tum abhi apni shakti ko poori tarah jagane ke daur mein ho.'
+        return 'This is the time to awaken your inner power and start building your confidence.'
     if age < 30:
-        return 'Yeh tumhara shakti ka tezi se badhne wala samay hai. tumhare andar nayi urja aur sahas hai.'
+        return 'Your power is growing fast now, and you should use your energy with courage.'
     if age < 45:
-        return 'Tumhari shakti taiyar hai aur tum ise achhi tarah apne hit mein laga sakte ho.'
-    return 'Tumhari sachchi shakti tumhari buddhi aur anubhav mein basti hai. abhi bhi tum naye mauke bana sakte ho.'
+        return 'Your power is ready, and you should use it wisely for your goals.'
+    return 'Your true power comes from your experience, and you can still reach new heights.'
 
 def time_message(age):
     if age < 16:
-        return 'Tumhara udaay abhi haasil karne wala hai. aage ka samay tumhare liye bahut upyogi hoga.'
+        return 'Your time to rise is just beginning; the next years will be very useful for you.'
     if age < 30:
-        return 'Tumhara samay abhi aane wala hai. mehnat aur dridh nishchay se yeh daur tumhari pehchaan ban sakta hai.'
+        return 'Your time is coming now. With hard work and strong focus, this period can define you.'
     if age < 45:
-        return 'Tumhara asli uran abhi shuru ho raha hai. yeh tumhara bhavishya badal sakta hai.'
-    return 'Tumhara samay abhi bhi hai. anubhav se tum naye mauke bana sakte ho.'
+        return 'Your real rise is starting. This can change your future if you stay determined.'
+    return 'You still have time. Use your experience to create new opportunities.'
 
 def get_topic_tagline(ambition, challenge):
     text = (ambition + ' ' + challenge).lower()
@@ -229,7 +237,7 @@ def get_topic_tagline(ambition, challenge):
 
 def main():
     st.title("Bhagavad Gita + Numerology Profile App")
-    st.write("Zyada sawaal puchh raha hoon taaki tumhara profile aur gehra ho sake.")
+    st.write("I will ask a few questions so your profile becomes more meaningful and useful.")
 
     with st.form("profile_form"):
         full_name = st.text_input('Tumhara poora naam kya hai?', value='Mitra Sharma')
@@ -245,9 +253,10 @@ def main():
         submitted = st.form_submit_button("Profile Generate Karo")
 
     if submitted:
-        st.header("Tumhara Vishleshan")
+        st.header("Your Vishleshan")
 
-        st.write(profile_summary(full_name, age, gender, city, ambition, favorite_color, challenge, career_goal))
+        for item in profile_summary(full_name, age, gender, city, ambition, favorite_color, challenge, career_goal):
+            st.markdown(f"- {item}")
 
         numbers = calculate_numerology(full_name)
         life_path = calculate_life_path(birthdate) if birthdate else None
@@ -287,9 +296,9 @@ def main():
                 for line in format_chapter_preview(roman, lines):
                     st.write(line)
         else:
-            st.write('Bhagavad Gita ki file uplabdh nahi hai ya vo sahi format mein nahi hai.')
+            st.write('Bhagavad Gita file is not available or it is not in the correct format.')
 
-        st.write('\nDhanyavaad! Tumhe aur bhi gahra Gita aur numerology ka profile dene ke liye dobara chala sakte ho.')
+        st.write('\nDhanyavaad! You can run this app again for a deeper Gita and numerology profile.')
 
 if __name__ == '__main__':
     main()
